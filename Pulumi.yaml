@@ -1,0 +1,6 @@
+name: patch-perf-test-ec2
+description: Test differential performance of Patch vs normal programs
+runtime:
+    name: python
+    options:
+        virtualenv: venv

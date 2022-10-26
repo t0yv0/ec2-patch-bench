@@ -1,0 +1,4 @@
+name: patch-testing
+description: Go program to stress-test service sync protocol
+runtime:
+  name: go
