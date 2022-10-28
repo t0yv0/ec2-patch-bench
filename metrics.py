@@ -6,15 +6,18 @@ df = df[df['errors'] == 'none']
 df_t = df[df['patch'] == True]
 df_f = df[df['patch'] == False]
 
-df_m = df_f.merge(df_t, how='inner', on=['pulumi_version',
-                                         'ec2_size',
-                                         'region',
-                                         'resource_count',
-                                         'resource_payload_bytes'])
+df_m = df_f.merge(df_t,
+                  how='inner',
+                  on=['pulumi_version',
+                      'ec2_size',
+                      'region',
+                      'resource_count',
+                      'resource_payload_bytes'],
+                  suffixes=('_base', '_patch'))
 
 df_m['stacksz'] = df['resource_count'] * df['resource_payload_bytes']
 
-df_m['speedup'] = 100.0 * (1.0 - df_m['up_sec_y'] / df_m['up_sec_x'])
+df_m['speedup'] = 100.0 * (1.0 - df_m['up_sec_patch'] / df_m['up_sec_base'])
 
 
 def speedup_hist(df, by_col='stacksz'):
@@ -33,9 +36,11 @@ print('\n\n== Speedup % by stack size ==\n\n')
 print(speedup_hist(df_m))
 
 
+cols = ['region', 'resource_count', 'stacksz', 'up_sec_base', 'up_sec_patch', 'speedup']
+
 print('\n\n== Worst speedup % examples ==\n\n')
-print(df_m[df_m['speedup'] < -10])
+print(df_m[df_m['speedup'] < -10][cols])
 
 
 print('\n\n== Best speedup % examples ==\n\n')
-print(df_m[df_m['speedup'] > 40])
+print(df_m[df_m['speedup'] > 40][cols])
