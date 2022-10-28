@@ -7,4 +7,3 @@ patch-testing/patch-testing
 */*.secret
 data/
 data-lowentropy/
-*.csv
