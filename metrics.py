@@ -25,10 +25,12 @@ def speedup_hist(df, by_col='stacksz'):
     df_m['speedup_min'] = df_m['speedup']
     df_m['speedup_avg'] = df_m['speedup']
     df_m['speedup_max'] = df_m['speedup']
-    return df_m[[by_col, 'speedup_min', 'speedup_avg', 'speedup_max']].groupby(by=[by_col]).agg({
+    df_m['count']       = 1
+    return df_m[[by_col, 'speedup_min', 'speedup_avg', 'speedup_max', 'count']].groupby(by=[by_col]).agg({
         'speedup_min': 'min',
         'speedup_avg': 'mean',
         'speedup_max': 'max',
+        'count':       'sum',
     })
 
 
